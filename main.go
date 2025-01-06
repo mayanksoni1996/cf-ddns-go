@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/getsentry/sentry-go"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -19,16 +18,6 @@ func filterRecord(records []cloudflare.DNSRecord, recordName string) cloudflare.
 	return cloudflare.DNSRecord{}
 }
 func main() {
-	err := sentry.Init(sentry.ClientOptions{
-		Dsn: "https://fe302b95fa9f32abf654c6791ad774c7@o4508594522095616.ingest.de.sentry.io/4508594825658448",
-		// Set TracesSampleRate to 1.0 to capture 100%
-		// of transactions for tracing.
-		// We recommend adjusting this value in production,
-		TracesSampleRate: 1.0,
-	})
-	if err != nil {
-		log.Fatalf("sentry.Init: %s", err)
-	}
 	resp, err := http.Get("https://api.ipify.org")
 	if err != nil {
 		log.Fatalf("Error getting IP: %s", err)
@@ -43,7 +32,6 @@ func main() {
 	zoneID, err := api.ZoneIDByName(zoneName)
 	if err != nil {
 		log.Fatalf("Error getting zone ID: %s", err)
-		sentry.CaptureException(err)
 	}
 	recordName := os.Getenv("CF_SUBDOMAIN") + "." + zoneName
 	//records, err := api.ListDNSRecords(context.Background(), zoneID, cloudflare.DNSRecord{Name: recordName})
