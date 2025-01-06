@@ -33,5 +33,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: myapp-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: myapp-${{ matrix.goos }}-${{ matrix.goarch }}
+          name: cf-ddns-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: cf-ddns-${{ matrix.goos }}-${{ matrix.goarch }}
